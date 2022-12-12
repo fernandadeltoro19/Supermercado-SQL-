@@ -84,6 +84,7 @@ idComprobante int identity (1,1),
 fecha datetime not null,
 cantidad int not null,
 productos varchar (50) not null,
+idCompra int not null,
 estatus bit default 1 not null,
 );
 GO
@@ -118,6 +119,7 @@ CREATE TABLE CONVENIO
 idConvenio int identity (1,1),
 fecha datetime not null,
 cantidad int not null,
+idCliente int not null,
 estatus bit default 1 not null,
 );
 GO
@@ -252,6 +254,7 @@ CREATE TABLE ESTACIONAMIENTO
 idEstacionamiento int identity (1,1),
 lugar int not null,
 tipo varchar (50) not null,
+idSucursal int not null,
 estatus bit default 1 not null,
 );
 GO
@@ -447,6 +450,7 @@ CREATE TABLE PRESTACION
 (
 idPrestacion int identity (1,1),
 tipo varchar (50) not null,
+idEmpleado int not null,
 estatus bit default 1 not null,
 );
 GO
@@ -484,6 +488,7 @@ calle varchar (50) not null,
 numero int not null,
 ciudad varchar (50) not null,
 telefono int not null,
+idRepresentante int not null,
 estatus bit default 1 not null,
 );
 GO
@@ -514,6 +519,7 @@ apellidopaterno varchar (50) not null,
 apellidomaterno varchar (50) not null,
 telefono int not null,
 empresa varchar (50) not null,
+idEmpresa int not null,
 estatus bit default 1 not null,
 );
 GO
@@ -524,6 +530,7 @@ idRestaurante int identity (1,1),
 mesas int not null,
 sillas int not null,
 comida varchar (50) not null,
+idSucursal int not null,
 estatus bit default 1 not null,
 );
 GO
@@ -784,6 +791,7 @@ ALTER TABLE SucursalEmpleado ADD CONSTRAINT PK_SucursalEmpleado PRIMARY KEY (idS
 ALTER TABLE TransportePaquete ADD CONSTRAINT PK_TransportePaquete PRIMARY KEY (idTransportePaquete)
 
 
+
 --LLAVES FORANEAS
 
 --Caja
@@ -969,6 +977,49 @@ ALTER TABLE TransportePaquete ADD CONSTRAINT FK_TransportePaqueteTransporte FORE
 Transporte (idTransporte)
 ALTER TABLE TransportePaquete ADD CONSTRAINT FK_TransportePaquetePaquete FOREIGN KEY (idPaquete) REFERENCES
 Paquete (idPaquete)
+
+
+--Puesto
+ALTER TABLE Puesto ADD CONSTRAINT PuestoEmpleado FOREIGN KEY (idEmpleado) REFERENCES
+Empleado(idEmpleado)
+
+--Restaurante
+ALTER TABLE Restaurante ADD CONSTRAINT RestauranteSucursal FOREIGN KEY (idSucursal) REFERENCES
+Sucursal(idSucursal)
+
+--Representante
+ALTER TABLE Proveedor ADD CONSTRAINT ProveedorRepresentante FOREIGN KEY (idRepresentante) REFERENCES
+Representante(idRepresentante)
+
+
+--Prestacion
+ALTER TABLE Prestacion ADD CONSTRAINT PrestacionEmpleado FOREIGN KEY (idEmpleado) REFERENCES
+Empleado(idEmpleado)
+
+--MetodoPago
+ALTER TABLE MetodoPago ADD CONSTRAINT MetodoPagoCliente FOREIGN KEY (idCliente) REFERENCES
+Cliente(idCliente)
+
+--EmpleadoPrestacion
+ALTER TABLE EmpleadoPrestacion ADD CONSTRAINT EmpleadoPrestacionEmpleado FOREIGN KEY (idEmpleado) REFERENCES
+Empleado(idEmpleado)
+ALTER TABLE EmpleadoPrestacion ADD CONSTRAINT EmpleadoPrestacionPrestacion FOREIGN KEY (idPrestacion) REFERENCES
+Prestacion(idPrestacion)
+
+--Estacionamiento
+ALTER TABLE Estacionamiento ADD CONSTRAINT EstacionamientoSucursal  FOREIGN KEY (idSucursal) REFERENCES
+Sucursal(idSucursal)
+--Convenio
+ALTER TABLE Convenio ADD CONSTRAINT ConvenioCliente FOREIGN KEY (idCliente) REFERENCES
+Cliente(idCliente)
+
+--Empresa
+ALTER TABLE Representante ADD CONSTRAINT RepresentanteEmpresa FOREIGN KEY (idEmpresa) REFERENCES
+Empresa(idEmpresa)
+
+--Comprobante
+ALTER TABLE Comprobante ADD CONSTRAINT ComprobanteCompra FOREIGN KEY (idCompra) REFERENCES
+Compra(idCompra)
 
 
 
